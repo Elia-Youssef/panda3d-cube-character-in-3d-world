@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Install system display support
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes xvfb
+
+      - name: Install dependencies
+        run: python -m pip install --requirement requirements.txt
+
+      - name: Run automated tests
+        run: xvfb-run --auto-servernum python -B tests/run_all.py

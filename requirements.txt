@@ -1,0 +1,3 @@
+# Cube Character in a 3D World - runtime dependency.
+# Pin matches the version the project was built and tested against.
+panda3d==1.10.16
